@@ -1,0 +1,15 @@
+networks:
+  bitbunker-network:
+    driver: "bridge"
+
+services:
+  bitbunker-db:
+    image: mysql
+    container_name: bitbunker-db
+    ports:
+      - 3300:3306
+    environment:
+      MYSQL_DATABASE: bitbunker-db
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - bitbunker-network

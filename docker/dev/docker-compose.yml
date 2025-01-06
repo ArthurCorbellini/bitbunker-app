@@ -1,0 +1,42 @@
+networks:
+  bitbunker-network:
+    driver: "bridge"
+
+services:
+  bitbunker-db:
+    image: mysql
+    container_name: bitbunker-db
+    ports:
+      - 3300:3306
+    environment:
+      MYSQL_DATABASE: bitbunker-db
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+    networks:
+      - bitbunker-network
+
+  bitbunker-api:
+    image: "artcorb/bitbunker-api:0.0.1-SNAPSHOT"
+    container_name: bitbunker-api
+    ports:
+      - "9000:9000"
+    depends_on:
+      bitbunker-db:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "bitbunker-api"
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: "jdbc:mysql://bitbunker-db:3306/bitbunker-db"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - bitbunker-network
