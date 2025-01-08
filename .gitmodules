@@ -1,7 +1,3 @@
 [submodule "bitbunker-api"]
 	path = bitbunker-api
 	url = https://github.com/ArthurCorbellini/bitbunker-api.git
-
-[submodule "bitbunker-web"]
-	path = bitbunker-web
-	url = https://github.com/ArthurCorbellini/bitbunker-web.git
